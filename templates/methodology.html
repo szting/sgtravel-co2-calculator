@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Methodology - Singapore Travel Emissions Calculator{% endblock %}
+
+{% block content %}
+<div class="glass-card-dark">
+    <div class="methodology-section">
+        <h2>📋 Calculation Methodology</h2>
+        
+        <h3>🗺️ Address Geocoding</h3>
+        <p>Singapore addresses are geocoded using the <a href="https://developers.onemap.sg/" class="source-link" target="_blank">OneMap Singapore API</a>, which provides:</p>
+        <ul>
+            <li>High accuracy for Singapore addresses with and without postal codes</li>
+            <li>Official government data source</li>
+            <li>Support for various address formats</li>
+        </ul>
+
+        <h3>📏 Distance Calculation</h3>
+        <p>Travel distances are calculated using:</p>
+        <ul>
+            <li><strong>Base Method:</strong> Haversine formula for great circle distance</li>
+            <li><strong>Road Factor:</strong> 1.3x multiplier to account for actual road routing in Singapore</li>
+            <li><strong>Rationale:</strong> Singapore's road network typically adds 20-40% to straight-line distances</li>
+        </ul>
+        
+        <p><em>Note: For production use, consider integrating with OneMap's routing API for precise road distances.</em></p>
+
+        <h3>🌱 Carbon Emission Factors</h3>
+        <p>CO₂ emissions are calculated using <strong>0.2 kg CO₂ per kilometer</strong> for private vehicles/taxis.</p>
+        
+        <h4>Sources and Justification:</h4>
+        <ul>
+            <li><strong>Singapore NEA Guidelines:</strong> <a href="https://www.nea.gov.sg/" class="source-link" target="_blank">National Environment Agency</a> emission factors for road transport</li>
+            <li><strong>IPCC Guidelines:</strong> <a href="https://www.ipcc-nggip.iges.or.jp/" class="source-link" target="_blank">2006 IPCC Guidelines for National Greenhouse Gas Inventories</a></li>
+            <li><strong>Singapore Context:</strong> Average for passenger cars and taxis in Singapore's vehicle fleet</li>
+            <li><strong>Fuel Mix:</strong> Accounts for Singapore's petrol and hybrid vehicle composition</li>
+        </ul>
+
+        <h3>📊 Data Processing</h3>
+        <p>The application processes your CSV data as follows:</p>
+        <ul>
+            <li>Preserves all original columns (Reference ID, Fiscal Year, etc.)</li>
+            <li>Adds three new columns: Distance_KM, CO2_Emissions_KG, Calculation_Status</li>
+            <li>Handles errors gracefully with descriptive status messages</li>
+            <li>Respects API rate limits with built-in delays</li>
+        </ul>
+
+        <h3>⚠️ Limitations and Considerations</h3>
+        <ul>
+            <li><strong>Distance Accuracy:</strong> Road factor approximation may vary by specific routes</li>
+            <li><strong>Vehicle Types:</strong> Uses average emission factor; actual emissions vary by vehicle model and age</li>
+            <li><strong>Traffic Conditions:</strong> Does not account for traffic-related fuel consumption increases</li>
+            <li><strong>API Dependencies:</strong> Requires internet connectivity for address geocoding</li>
+        </ul>
+
+        <h3>🔬 Validation and Quality Assurance</h3>
+        <p>To ensure data quality:</p>
+        <ul>
+            <li>Cross-reference calculated distances with known Singapore routes</li>
+            <li>Compare emission estimates with other carbon calculators</li>
+            <li>Review any "Unable to calculate" entries for data quality issues</li>
+            <li>Consider manual verification for high-value or critical calculations</li>
+        </ul>
+
+        <h3>📚 Additional Resources</h3>
+        <ul>
+            <li><a href="https://www.carbontruststandard.com/" class="source-link" target="_blank">Carbon Trust Standard</a> - International carbon measurement guidelines</li>
+            <li><a href="https://ghgprotocol.org/" class="source-link" target="_blank">GHG Protocol</a> - Corporate greenhouse gas accounting standards</li>
+            <li><a href="https://www.gov.sg/article/singapores-climate-targets" class="source-link" target="_blank">Singapore's Climate Targets</a> - National sustainability goals</li>
+        </ul>
+    </div>
+</div>
+
+<div class="glass-card">
+    <h3 style="color: white; margin-bottom: 1rem;">💡 Best Practices for Corporate Use</h3>
+    <div style="color: rgba(255, 255, 255, 0.9);">
+        <p><strong>Data Collection:</strong> Ensure consistent address formatting and include postal codes when available for better accuracy.</p>
+        <p><strong>Reporting:</strong> Include calculation methodology and emission factors in sustainability reports for transparency.</p>
+        <p><strong>Verification:</strong> Periodically validate results against alternative calculation methods or updated emission factors.</p>
+        <p><strong>Action Planning:</strong> Use results to identify high-emission routes and explore alternatives like public transport or remote work.</p>
+    </div>
+</div>
+{% endblock %}

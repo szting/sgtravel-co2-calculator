@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-card">
+    <h2 style="color: white; font-size: 1.8rem; margin-bottom: 1.5rem; font-weight: 600;">📁 Upload Your CSV File</h2>
+    
+    <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" id="uploadForm">
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📄</div>
+            <h3 style="color: white; margin-bottom: 1rem;">Drop your CSV file here or click to browse</h3>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1.5rem;">
+                Supported format: CSV files with Start Address and End Address columns
+            </p>
+            <input type="file" name="file" accept=".csv" class="file-input" id="fileInput" required>
+            <button type="button" class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                Choose File
+            </button>
+            <div id="fileName" style="margin-top: 1rem; color: white; font-weight: 500;"></div>
+        </div>
+        
+        <button type="submit" class="process-btn" id="processBtn" disabled>
+            🚀 Calculate Emissions
+        </button>
+    </form>
+</div>
+
+<div class="info-grid">
+    <div class="info-card">
+        <h3>📋 Required CSV Format</h3>
+        <p>Your CSV should contain columns for:</p>
+        <ul style="margin-top: 0.5rem; color: rgba(255, 255, 255, 0.8);">
+            <li>Start Address (or similar)</li>
+            <li>End Address (or similar)</li>
+            <li>Reference ID (optional)</li>
+            <li>Fiscal Year (optional)</li>
+            <li>Any other data columns</li>
+        </ul>
+    </div>
+    
+    <div class="info-card">
+        <h3>🗺️ Address Support</h3>
+        <p>Supports Singapore addresses with or without postal codes. The system will attempt to geocode all addresses using Singapore's OneMap API for accurate location matching.</p>
+    </div>
+    
+    <div class="info-card">
+        <h3>🚗 Travel Mode</h3>
+        <p>Calculations are based on car/taxi/private hire vehicle travel distances. CO₂ emissions use standard emission factors for Singapore road transport.</p>
+    </div>
+    
+    <div class="info-card">
+        <h3>📊 Output Data</h3>
+        <p>You'll receive your original data plus:</p>
+        <ul style="margin-top: 0.5rem; color: rgba(255, 255, 255, 0.8);">
+            <li>Distance in kilometers</li>
+            <li>CO₂ emissions in kg</li>
+            <li>Calculation status</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+    const processBtn = document.getElementById('processBtn');
+    const uploadArea = document.getElementById('uploadArea');
+
+    fileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            const file = e.target.files[0];
+            fileName.textContent = `Selected: ${file.name}`;
+            processBtn.disabled = false;
+        } else {
+            fileName.textContent = '';
+            processBtn.disabled = true;
+        }
+    });
+
+    // Drag and drop functionality
+    uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && files[0].name.toLowerCase().endsWith('.csv')) {
+            fileInput.files = files;
+            fileName.textContent = `Selected: ${files[0].name}`;
+            processBtn.disabled = false;
+        }
+    });
+
+    // Form submission handling
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        processBtn.textContent = '⏳ Processing...';
+        processBtn.disabled = true;
+    });
+</script>
+{% endblock %}

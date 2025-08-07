@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Singapore Travel Emissions Calculator{% endblock %}</title>
+    
+    <!-- Meta tags -->
+    <meta property="og:title" content="Singapore Travel Emissions Calculator - Built with ChatAndBuild">
+    <meta property="og:description" content="Calculate carbon emissions for employee travel in Singapore using address data">
+    <meta property="og:image" content="https://cdn.chatandbuild.com/images/preview.png">
+    <meta property="keywords" content="no-code, app builder, conversation-driven development, carbon emissions, travel calculator, Singapore">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Singapore Travel Emissions Calculator - Built with ChatAndBuild">
+    <meta property="twitter:description" content="Calculate carbon emissions for employee travel in Singapore using address data">
+    <meta property="twitter:image" content="https://cdn.chatandbuild.com/images/preview.png">
+    <meta property="twitter:site" content="@chatandbuild">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .glass-card-dark {
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .nav-link {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .upload-area.dragover {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .process-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .process-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .process-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            color: #2e7d32;
+        }
+
+        .alert-error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            color: #c62828;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 1.5rem;
+            color: white;
+        }
+
+        .info-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #E0F7FA;
+        }
+
+        .info-card p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        .methodology-section {
+            margin-top: 2rem;
+        }
+
+        .methodology-section h2 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .methodology-section h3 {
+            color: #E0F7FA;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            margin-top: 1.5rem;
+            font-weight: 500;
+        }
+
+        .methodology-section p, .methodology-section li {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .methodology-section ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .source-link {
+            color: #81D4FA;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .source-link:hover {
+            color: #4FC3F7;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .upload-area {
+                padding: 2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌱 Singapore Travel Emissions Calculator</h1>
+            <p>Calculate carbon emissions for employee travel using address data</p>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}" class="nav-link">📊 Calculator</a>
+                <a href="{{ url_for('methodology') }}" class="nav-link">📋 Methodology</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if 'Success' in message %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% else %}
+                        <div class="alert alert-error">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
