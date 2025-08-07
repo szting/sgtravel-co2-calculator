@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singapore Travel Carbon Emissions Calculator</title>
+  <meta property="og:title" content="Singapore Travel Carbon Emissions Calculator - Built with ChatAndBuild">
+  <meta property="og:description" content="Calculate carbon emissions from employee travel data using Singapore addresses">
+  <meta property="og:image" content="https://cdn.chatandbuild.com/images/preview.png">
+  <meta property="keywords" content="no-code, app builder, conversation-driven development, carbon calculator, emissions tracking">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Singapore Travel Carbon Emissions Calculator - Built with ChatAndBuild">
+  <meta property="twitter:description" content="Calculate carbon emissions from employee travel data using Singapore addresses">
+  <meta property="twitter:image" content="https://cdn.chatandbuild.com/images/preview.png">
+  <meta property="twitter:site" content="@chatandbuild">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .upload-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .upload-area {
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      padding: 60px 40px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-area:hover {
+      border-color: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .upload-area.dragover {
+      border-color: #4CAF50;
+      background: rgba(76, 175, 80, 0.1);
+    }
+
+    .upload-icon {
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 20px;
+    }
+
+    .upload-text {
+      color: white;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .upload-subtext {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #4CAF50, #45a049);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .btn:disabled {
+      background: rgba(255, 255, 255, 0.3);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .progress-container {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #45a049);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      color: white;
+      text-align: center;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .results-section {
+      display: none;
+      margin-top: 40px;
+    }
+
+    .results-card {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 20px;
+    }
+
+    .results-title {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #4CAF50;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+    }
+
+    .download-btn {
+      background: linear-gradient(45deg, #2196F3, #1976D2);
+      box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    }
+
+    .download-btn:hover {
+      box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+    }
+
+    .methodology-section {
+      margin-top: 40px;
+    }
+
+    .methodology-title {
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .methodology-content {
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .methodology-content h3 {
+      color: white;
+      margin: 20px 0 10px 0;
+      font-size: 1.2rem;
+    }
+
+    .methodology-content ul {
+      margin-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .alert {
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .alert-success {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      color: #4CAF50;
+    }
+
+    .alert-error {
+      background: rgba(244, 67, 54, 0.2);
+      border: 1px solid rgba(244, 67, 54, 0.3);
+      color: #f44336;
+    }
+
+    @media (max-width: 768px) {
+      .glass-card {
+        padding: 20px;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .upload-area {
+        padding: 40px 20px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🌱 Singapore Travel Carbon Calculator</h1>
+      <p>Calculate CO₂ emissions from employee travel data using Singapore addresses</p>
+    </div>
+
+    <div class="glass-card">
+      <div class="upload-section">
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">📊</div>
+          <div class="upload-text">Drop your CSV file here</div>
+          <div class="upload-subtext">or click to browse files</div>
+          <button class="btn" onclick="document.getElementById('fileInput').click()">
+            Choose File
+          </button>
+          <input type="file" id="fileInput" class="file-input" accept=".csv" />
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-text" id="progressText">Processing...</div>
+        </div>
+      </div>
+
+      <div id="alertContainer"></div>
+
+      <div class="results-section" id="resultsSection">
+        <div class="results-card">
+          <div class="results-title">📈 Calculation Results</div>
+          <div class="stats-grid" id="statsGrid">
+            <!-- Stats will be populated here -->
+          </div>
+          <div style="text-align: center;">
+            <button class="btn download-btn" id="downloadBtn">
+              📥 Download Results
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card methodology-section">
+      <div class="methodology-title">📋 Methodology & Data Sources</div>
+      <div class="methodology-content">
+        <h3>🚗 Distance Calculation</h3>
+        <ul>
+          <li>Addresses are geocoded using OneMap Singapore API</li>
+          <li>Driving distances calculated using road network routing</li>
+          <li>Fallback to straight-line distance with 1.3x road factor for Singapore</li>
+        </ul>
+
+        <h3>🌍 Carbon Emission Factors</h3>
+        <ul>
+          <li><strong>Private Cars/Taxis:</strong> 0.2 kg CO₂ per km</li>
+          <li>Based on Singapore's National Environment Agency (NEA) guidelines</li>
+          <li>Includes average fuel consumption and emission factors for Singapore vehicle fleet</li>
+        </ul>
+
+        <h3>📄 CSV Format Requirements</h3>
+        <ul>
+          <li>Must contain columns: "Start Address" and "End Address"</li>
+          <li>Addresses should be Singapore locations (with or without postal codes)</li>
+          <li>Additional columns will be preserved in the output</li>
+        </ul>
+
+        <h3>📊 Output Data</h3>
+        <ul>
+          <li>Original data plus calculated fields:</li>
+          <li><strong>Distance_KM:</strong> Driving distance in kilometers</li>
+          <li><strong>CO2_Emissions_KG:</strong> Carbon emissions in kilograms</li>
+          <li><strong>Calculation_Status:</strong> Success or error details</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const resultsSection = document.getElementById('resultsSection');
+    const statsGrid = document.getElementById('statsGrid');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const alertContainer = document.getElementById('alertContainer');
+
+    let processedData = null;
+
+    // Drag and drop functionality
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        handleFile(files[0]);
+      }
+    });
+
+    uploadArea.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    function showAlert(message, type = 'error') {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type}`;
+      alertDiv.textContent = message;
+      alertContainer.innerHTML = '';
+      alertContainer.appendChild(alertDiv);
+      
+      setTimeout(() => {
+        alertDiv.remove();
+      }, 5000);
+    }
+
+    function updateProgress(percent, text) {
+      progressFill.style.width = percent + '%';
+      progressText.textContent = text;
+    }
+
+    function showResults(stats) {
+      statsGrid.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-number">${stats.totalRecords}</div>
+          <div class="stat-label">Total Records</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">${stats.successfulCalculations}</div>
+          <div class="stat-label">Successful Calculations</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">${stats.totalDistance.toFixed(1)}</div>
+          <div class="stat-label">Total Distance (km)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">${stats.totalEmissions.toFixed(2)}</div>
+          <div class="stat-label">Total CO₂ Emissions (kg)</div>
+        </div>
+      `;
+      resultsSection.style.display = 'block';
+    }
+
+    async function handleFile(file) {
+      if (!file.name.toLowerCase().endsWith('.csv')) {
+        showAlert('Please select a CSV file');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      progressContainer.style.display = 'block';
+      resultsSection.style.display = 'none';
+      updateProgress(0, 'Uploading file...');
+
+      try {
+        const response = await fetch('/api/process-csv', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+          processedData = result.data;
+          showResults(result.stats);
+          showAlert(result.message, 'success');
+          updateProgress(100, 'Processing complete!');
+        } else {
+          throw new Error(result.error);
+        }
+
+      } catch (error) {
+        console.error('Error:', error);
+        showAlert(`Error processing file: ${error.message}`);
+        progressContainer.style.display = 'none';
+      }
+    }
+
+    downloadBtn.addEventListener('click', async () => {
+      if (!processedData) return;
+
+      try {
+        const response = await fetch('/api/download-csv', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ data: processedData })
+        });
+
+        if (!response.ok) {
+          throw new Error('Download failed');
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `emissions_calculated_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
+      } catch (error) {
+        showAlert('Error downloading file: ' + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

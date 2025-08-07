@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Methodology - Singapore Travel Carbon Calculator</title>
+  
+  <!-- Meta tags -->
+  <meta property="og:title" content="Methodology - Singapore Travel Carbon Calculator - Built with ChatAndBuild">
+  <meta property="og:description" content="Detailed methodology for calculating carbon emissions from Singapore travel data">
+  <meta property="og:image" content="https://cdn.chatandbuild.com/images/preview.png">
+  <meta property="keywords" content="no-code, app builder, conversation-driven development, carbon calculator, methodology">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Methodology - Singapore Travel Carbon Calculator - Built with ChatAndBuild">
+  <meta property="twitter:description" content="Detailed methodology for calculating carbon emissions from Singapore travel data">
+  <meta property="twitter:image" content="https://cdn.chatandbuild.com/images/preview.png">
+  <meta property="twitter:site" content="@chatandbuild">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-content">
+        <h1 class="title">📊 Calculation Methodology</h1>
+        <p class="subtitle">How we calculate carbon emissions from travel data</p>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="methodology-content">
+        <div class="glass-card">
+          <h2>🗺️ Address Geocoding</h2>
+          <div class="method-details">
+            <p><strong>Data Source:</strong> OneMap Singapore API</p>
+            <p><strong>Process:</strong></p>
+            <ul>
+              <li>Convert Singapore addresses to latitude/longitude coordinates</li>
+              <li>Handle various address formats (with/without postal codes)</li>
+              <li>Validate addresses against Singapore's official database</li>
+              <li>Return formatted addresses for verification</li>
+            </ul>
+            <p><strong>API Endpoint:</strong> <code>https://developers.onemap.sg/commonapi/search</code></p>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h2>📏 Distance Calculation</h2>
+          <div class="method-details">
+            <p><strong>Method:</strong> Haversine Formula with Road Factor</p>
+            <p><strong>Process:</strong></p>
+            <ol>
+              <li>Calculate great circle distance between coordinates</li>
+              <li>Apply Singapore road factor of 1.3x to account for actual driving routes</li>
+              <li>Round to 2 decimal places for accuracy</li>
+            </ol>
+            <p><strong>Formula:</strong></p>
+            <pre><code>a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
+c = 2 ⋅ atan2(√a, √(1−a))
+d = R ⋅ c ⋅ 1.3</code></pre>
+            <p><em>Where R = 6,371 km (Earth's radius)</em></p>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h2>🌱 Carbon Emissions</h2>
+          <div class="method-details">
+            <p><strong>Emission Factor:</strong> 0.2 kg CO₂ per kilometer</p>
+            <p><strong>Vehicle Types Covered:</strong></p>
+            <ul>
+              <li>Private cars</li>
+              <li>Taxis</li>
+              <li>Private hire vehicles (Grab, Gojek, etc.)</li>
+            </ul>
+            <p><strong>Sources:</strong></p>
+            <ul>
+              <li>Singapore's National Environment Agency (NEA)</li>
+              <li>IPCC Guidelines for National Greenhouse Gas Inventories</li>
+              <li>Average emission factor for Singapore's vehicle fleet</li>
+            </ul>
+            <p><strong>Calculation:</strong> <code>CO₂ Emissions (kg) = Distance (km) × 0.2</code></p>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h2>⚠️ Error Handling</h2>
+          <div class="method-details">
+            <p><strong>Status Messages:</strong></p>
+            <ul>
+              <li><strong>Success:</strong> Calculation completed successfully</li>
+              <li><strong>Unable to calculate - Missing address:</strong> Start or end address is empty</li>
+              <li><strong>Unable to calculate - Start address not found:</strong> Start address not found in Singapore</li>
+              <li><strong>Unable to calculate - End address not found:</strong> End address not found in Singapore</li>
+              <li><strong>Unable to calculate - Distance calculation failed:</strong> Technical error in distance calculation</li>
+            </ul>
+            <p><strong>Data Preservation:</strong> All original CSV columns are preserved in the output file.</p>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h2>🔒 Data Privacy & Security</h2>
+          <div class="method-details">
+            <ul>
+              <li>Files are processed temporarily and deleted after download</li>
+              <li>No data is stored permanently on our servers</li>
+              <li>All API requests use HTTPS encryption</li>
+              <li>Rate limiting applied to respect API usage policies</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <h2>📈 Accuracy & Limitations</h2>
+          <div class="method-details">
+            <p><strong>Accuracy:</strong></p>
+            <ul>
+              <li>Distance accuracy: ±5-10% compared to actual driving routes</li>
+              <li>Emission factor represents average for Singapore vehicle fleet</li>
+              <li>Addresses must be valid Singapore locations</li>
+            </ul>
+            <p><strong>Limitations:</strong></p>
+            <ul>
+              <li>Does not account for traffic conditions or route optimization</li>
+              <li>Uses average emission factor (actual emissions vary by vehicle type and age)</li>
+              <li>Limited to Singapore addresses only</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="back-link">
+        <a href="/" class="btn-primary">← Back to Calculator</a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; 2024 Singapore Travel Carbon Calculator. Built for sustainability reporting.</p>
+    </footer>
+  </div>
+</body>
+</html>

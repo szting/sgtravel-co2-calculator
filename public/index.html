@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singapore Travel Carbon Emissions Calculator - Built with ChatAndBuild</title>
+  
+  <!-- Meta tags -->
+  <meta property="og:title" content="Singapore Travel Carbon Emissions Calculator - Built with ChatAndBuild">
+  <meta property="og:description" content="Calculate carbon emissions from employee travel data in Singapore using address-based distance calculations">
+  <meta property="og:image" content="https://cdn.chatandbuild.com/images/preview.png">
+  <meta property="keywords" content="no-code, app builder, conversation-driven development, carbon calculator, sustainability">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Singapore Travel Carbon Emissions Calculator - Built with ChatAndBuild">
+  <meta property="twitter:description" content="Calculate carbon emissions from employee travel data in Singapore using address-based distance calculations">
+  <meta property="twitter:image" content="https://cdn.chatandbuild.com/images/preview.png">
+  <meta property="twitter:site" content="@chatandbuild">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-content">
+        <h1 class="title">🌱 Singapore Travel Carbon Calculator</h1>
+        <p class="subtitle">Calculate CO₂ emissions from employee travel data</p>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="upload-section">
+        <div class="glass-card">
+          <h2>Upload Your Travel Data</h2>
+          <p class="description">
+            Upload a CSV file containing start and end addresses for Singapore locations. 
+            We'll calculate distances and carbon emissions for each journey.
+          </p>
+          
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <p class="upload-text">
+              <strong>Click to upload</strong> or drag and drop your CSV file here
+            </p>
+            <p class="upload-hint">Maximum file size: 16MB</p>
+            <input type="file" id="fileInput" accept=".csv" hidden>
+          </div>
+          
+          <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">Processing...</p>
+          </div>
+          
+          <div class="result-message" id="resultMessage" style="display: none;"></div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="glass-card">
+          <h3>📋 CSV Format Requirements</h3>
+          <ul class="requirements-list">
+            <li><strong>Required Columns:</strong> "Start Address" and "End Address"</li>
+            <li><strong>Address Format:</strong> Singapore addresses (with or without postal codes)</li>
+            <li><strong>Examples:</strong>
+              <ul>
+                <li>"Marina Bay Sands, Singapore"</li>
+                <li>"Raffles Place MRT Station"</li>
+                <li>"123 Orchard Road, Singapore 238874"</li>
+              </ul>
+            </li>
+            <li><strong>Output:</strong> Original data + Distance (KM) + CO₂ Emissions (KG) + Status</li>
+          </ul>
+        </div>
+
+        <div class="glass-card">
+          <h3>🚗 Calculation Method</h3>
+          <ul class="method-list">
+            <li><strong>Distance:</strong> Driving distance between addresses</li>
+            <li><strong>Emission Factor:</strong> 0.2 kg CO₂ per kilometer</li>
+            <li><strong>Vehicle Type:</strong> Private cars, taxis, and private hire vehicles</li>
+            <li><strong>Data Source:</strong> OneMap Singapore API for geocoding</li>
+          </ul>
+          <a href="/methodology" class="methodology-link">View detailed methodology →</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; 2024 Singapore Travel Carbon Calculator. Built for sustainability reporting.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
